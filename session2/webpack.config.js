@@ -5,7 +5,7 @@ module.exports = {
     mode: 'development',
     // entry: './src/index.ts', // 简写
     entry: {
-        main: './src/index.ts',
+        main: './src/index.js',
     },
 
     module: {
@@ -13,6 +13,18 @@ module.exports = {
             test: /\.tsx?$/,
             use: 'ts-loader',
             exclude: /node_modules/,
+        }, {
+            test: /\.(png|jpg|gif)$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                    name: '[name].[ext]', // placeholder 占位符
+                    outputPath: 'images/',
+                    limit: 2048
+                }
+              },
+            ],
         }],
     },
 
