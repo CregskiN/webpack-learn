@@ -5,7 +5,7 @@ module.exports = {
     mode: 'development',
     // entry: './src/index.ts', // 简写
     entry: {
-        main: './src/index.js',
+        main: './src/index.ts',
     },
 
     module: {
@@ -14,18 +14,36 @@ module.exports = {
             use: 'ts-loader',
             exclude: /node_modules/,
         }, {
-            test: /\.(png|jpg|gif)$/,
-            use: [
-              {
+            test: /\.(png|jp?g|gif)$/,
+            use: [{
                 loader: 'url-loader',
                 options: {
                     name: '[name].[ext]', // placeholder 占位符
                     outputPath: 'images/',
                     limit: 2048
                 }
-              },
-            ],
-        }],
+            }],
+        }, {
+            test: /\.eot|ttf|svg|woff$/,
+            use: [{
+                loader: 'file-loader'
+            }]
+        }, {
+            test: /\.scss$/,
+            use: [
+                'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 2,  // 在此之前的loader数量
+                        // modules: true // 启用模块化css打包
+                    }
+                },
+                'sass-loader',
+                'postcss-loader'
+            ]
+        }
+        ],
     },
 
     resolve: {
