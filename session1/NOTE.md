@@ -22,6 +22,8 @@ npm install webpack@4.25.0 # 指定webpack版本
 
 6. 打包数据
 
+7. ts-loader 可以编译const ()=>{}
+
 ```
 Hash: 4296ba2e8ff7d827df3c
 Version: webpack 4.41.5
