@@ -140,7 +140,7 @@
 
     **@babel/core**: babel 核心库，识别 js 代码内容，编译为语法树  
      **@babel/preset-env**: 编译部分(如 const ()=>{})为 ES5 代码，但有些变量没有(如 Promise)  
-     **@babel/plugin-transform-runtime**: (devDependencies) 以闭包注入低版本浏览器不支持的变量(需配置codejs2)  
+     **@babel/plugin-transform-runtime**: (devDependencies) 以闭包注入低版本浏览器不支持的变量(需配置codejs)  
      **@babel/runtime-corejs2** : (dependencies)
 
 关于 babel-polyfill babel-runtime  

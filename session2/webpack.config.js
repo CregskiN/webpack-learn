@@ -8,12 +8,12 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development',
 
-    devtool: 'cheap-eval-source-map',
+    devtool: 'cheap-module-eval-source-map',
 
     target: 'web',
 
     entry: {
-        main: './src/index.tsx'
+        main: './src/index.ts'
     },
 
     devServer: {
@@ -29,27 +29,23 @@ module.exports = {
             test: /\.ts?$/,
             exclude: /node_modules/, // 排除在外
             use: [{
-                loader: 'babel-loader',
+                loader: 'babel-loader', 
                 options: {
-                    /* presets: [['@babel/preset-env', {
-                        modules: false, // 模块使用 es modules ，不使用 commonJS 规范 
-                        useBuiltIns: 'usage', // 默认 false, 可选 entry , usage // 根据新语法使用情况，添加Promise 等
-                        targets: {
-                            chrome: 67,
-                            ie: 10
-                        }
-                    }]], */
-                    plugins: [['@babel/plugin-transform-runtime', {
-                        corejs: 2, // 默认值，可以不写
+                    presets: [['@babel/preset-env', {
+                        modules: false, // 模块使用 es modules ，不使用 commonJS  
+                        useBuiltIns: 'usage',
+                        targets: {},
+                        corejs: { version: 3, proposals: true }// ※(必需) 选择使用core-js版本
+                    }]],
+                    /* plugins: [['@babel/plugin-transform-runtime', {
+                        corejs: 3, // 默认值，可以不写
                         helpers: true, // 默认，可以不写
                         regenerator: true, // 通过 preset-env 已经使用了全局的 regeneratorRuntime, 不再需要 transform-runtime 提供的 不污染全局的 regeneratorRuntime
-                        useESModules: true, // 使用 es modules helpers, 减少 commonJS 语法代码
-                    }]
-                    ]
+                        useESModules: true, // 使用 es modules helpers, 减少 commonJS 语法代码 
+                    }]] */
                 }
             }, {
                 loader: 'ts-loader',
-                exclude: /node_modules/
             }]
         }, {
             test: /\.(png|jp?g|gif)$/,
@@ -93,7 +89,7 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'HTML template',
+            // title: 'HTML template',
             template: 'src/static/index.html',
             favicon: 'src/static/avatar.jpg'
         }),
