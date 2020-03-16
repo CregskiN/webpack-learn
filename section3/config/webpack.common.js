@@ -1,9 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 代码分析
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
 
+const devConfig = require('./webpack.dev');
+const prodConfig = require('./webpack.prod');
 
-module.exports = {
+const commonConfig = {
     entry: {
         main: './src/index.ts',
     },
@@ -14,8 +20,31 @@ module.exports = {
         rules: [{
             test: /\.tsx? | \.js$/,
             exclude: /node_modules/,
+            use: [{
+                loader: 'imports-loader?this=>window'
+            }, {
+                loader: 'babel-loader'
+            }],
+        }, {
+            test: /\.css?$/,
+            exclude: /node_modules/,
+            // use: ['style-loader', {
+            //     loader: 'css-loader',
+            //     options: {
+            //         importLoaders: 1,
+            //         modules: {
+            //             localIdentName: '[name]_[local]-[hash:base64:5]',
+            //         }
+            //     }
+            // }, 'postcss-loader']
             use: [
-                'babel-loader'
+                {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: '/public/path/to/',
+                    },
+                },
+                'css-loader',
             ],
         }]
     },
@@ -31,40 +60,57 @@ module.exports = {
         new CleanWebpackPlugin({
             verbose: true, // 打印删除信息
             // cleanOnceBeforeBuildPatterns: ['build']
+        }),
+        // new BundleAnalyzerPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[name].chunk.css',
+        }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            _join: ['lodash', 'join'],
         })
     ],
 
     optimization: {
+        // usedExports: true,
+
         splitChunks: {
-            chunks: 'all', // 针对异步导入分割 // 'all' @全部(按cacheGroups.defaultVendors配置进行) // 'initial' 针对同步代码分割
-            minSize: 30000, // 引入模块大于minSize才进行代码分割 30000b = 30kb // 一般自写模块不会超过这个大小
-            // minRemainingSize: 0,
-            maxSize: 0, // 代码分割，每个库最大不超过maxSize bytes
-            minChunks: 1, // 一个模块被使用至少minChunks次才代码分割
-            maxAsyncRequests: 6, // 限制同时加载库数量  做法：前maxAsyncRequests个库代码分割，其他不管
-            maxInitialRequests: 4, // 入口文件做代码分割，最多有maxInitialRequests个
-            automaticNameDelimiter: '~', // 文件生成 文件名连接符
-            automaticNameMaxLength: 30,
-            cacheGroups: { // 缓存组 对下边条件分别代码分割
-                defaultVendors: {
-                    test: /[\\/]node_modules[\\/]/, // 针对从node_modules导入的模块
-                    priority: -10, // 打包绝对优先级 // 优先级高于test筛选
-                    // filename: 'vendors.js' // 打包成的文件名
-                    
-                },
-                default: {
-                    // minChunks: 1,
-                    priority: -20, // 打包绝对优先级
-                    reuseExistingChunk: true, // 复用打包模块 // 如编译a.js b.js都导入c模块，c只被打包一次
-                    filename: 'common.js'
-                }
-            }
+            chunks: 'all',
+            // minSize: 30000,
+            // // minRemainingSize: 0,
+            // maxSize: 0,
+            // minChunks: 1,
+            // maxAsyncRequests: 6,
+            // maxInitialRequests: 4,
+            // automaticNameDelimiter: '~',
+            // automaticNameMaxLength: 30,
+            // name: true,
+            // cacheGroups: {
+            //     defaultVendors: {
+            //         test: /[\\/]node_modules[\\/]/,
+            //         priority: -10,
+            //         filename: 'file.js'
+            //     },
+            //     default: {
+            //         minChunks: 2,
+            //         priority: -20,
+            //         reuseExistingChunk: true
+            //     }
+            // }
         }
     },
-
     output: {
         // publicPath: '/', // 这里如果是./会导致HMR无法开启
-        filename: '[name].js',
+
         path: path.resolve(__dirname, '../build')
+    }
+}
+
+module.exports = (env) => {
+    if (env && env.production) {
+        return merge(commonConfig, prodConfig);
+    } else {
+        return merge(commonConfig, devConfig);
     }
 }

@@ -6,6 +6,9 @@
 //     console.log(a - b);
 // }
 
+console.log(this);
+console.log(this === window);
+
 
 function handleClick() {
     const element = document.createElement('div');
