@@ -20,7 +20,7 @@ const devConfig = {
     ],
 
     optimization: {
-        usedExports: true // 开发环境
+        usedExports: true // Tree Shaking
     },
 
     output: {

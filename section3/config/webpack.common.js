@@ -66,7 +66,7 @@ const commonConfig = {
             filename: '[name].css',
             chunkFilename: '[name].chunk.css',
         }),
-        new webpack.ProvidePlugin({
+        new webpack.ProvidePlugin({ // webpack polyfill
             $: 'jquery',
             _join: ['lodash', 'join'],
         })

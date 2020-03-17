@@ -1,10 +1,12 @@
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 
+const commonConfig = require('./webpack.common');
+const merge = require('webpack-merge');
 
 const prodConfig = {
     mode: 'production',
-    
+
     devtool: 'cheap-module-inline-source-map',
 
     optimization: {
@@ -12,9 +14,10 @@ const prodConfig = {
     },
 
     output: {
-        filename: '[name].[contenthash].js', // 入口文件输出文件名
-        chunkFilename: '[name].[contenthash].chunk.js', // 入口文件间接导入的模块名
+        filename: '[name]_[contenthash].js',
+        chunkFilename: '[name]_[contenthash].js'
     }
 }
 
-module.exports = prodConfig;
+
+module.exports = merge(prodConfig, commonConfig);

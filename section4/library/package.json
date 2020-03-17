@@ -1,0 +1,31 @@
+{
+  "name": "library-cregskin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/library.js",
+  "private": false,
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "cregskin",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "lodash": "^4.17.15",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/runtime": "^7.8.7",
+    "@babel/runtime-corejs3": "^7.8.7",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.6.4",
+    "library-cregskin": "^1.0.0"
+  }
+}

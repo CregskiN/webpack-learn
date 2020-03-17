@@ -7,7 +7,7 @@
         "useBuiltIns": "usage",
       //   "targets": {},
         "corejs": 3
-      },
+      }
     ],
     // "@babel/preset-react",
     "@babel/preset-typescript"
