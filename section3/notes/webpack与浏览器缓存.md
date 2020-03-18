@@ -14,6 +14,17 @@
 <script type="text/javascript" src="main.f3a072ce9ec4fb7028ac.js"></script>
 ```
 
-+ 老版本webpack的即使不修改文件contenthash也会变化
+`配置如下` 
+
+``` js
+output: {
+    filename: '[name].[contenthash].js', // 入口文件输出文件名
+    chunkFilename: '[name].[contenthash].chunk.js', // 入口文件间接导入的模块名
+}
+```
+
+* 老版本webpack的即使不修改文件contenthash也会变化
+
 原因：minifest(文件关系)存储在每个文件中，即使不修改内容，minifest也可能变化，导致contenthash跟着变化
 解决办法：配置optimization.runtimeChunk.name: 'runtime'，会在打包时生成runtime文件，专门存储minifest
+
