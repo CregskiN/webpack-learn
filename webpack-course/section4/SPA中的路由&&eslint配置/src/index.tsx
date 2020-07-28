@@ -9,7 +9,7 @@ const List = lazy(() => import('./Pages/List/index'));
 
 
 const App: React.FC = () => {
-
+    var a = 10;
     console.log('hello');
 
     return (
